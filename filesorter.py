@@ -14,16 +14,13 @@ import shutil
 source='C:/path/to/source/'
 destination='C:/path/to/destination/'
 
-the_list=[['photo', 'My Pictures'], ['video', 'My Videos']]
+the_list=[('photo', 'My Pictures'), ('video', 'My videos')]
 
-try:
-    for root, dirs, files in os.walk(source):
-        for name in dirs:
-            print(name)
-        for name in files:
-            f_name=os.path.join(root, name)
-            for x in the_list:
-                if x[0].lower() in (name.lower()):
-                    shutil.move(f_name, destination+x[1])
-except Exception:
-    pass
+file_list=[f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
+for file_to_move in file_list:
+    for x in the_list:
+        string_to_match=x[0]
+        sub_folder=x[1]
+        if string_to_match.lower() in (file_to_move.lower()):
+            print('File', file_to_move, 'was moved to', destination+sub_folder)
+            shutil.move(destination+file_to_move, destination+sub_folder)
